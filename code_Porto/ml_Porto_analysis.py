@@ -7,9 +7,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GroupKFold, train_test_split
 
-# ==========================================
+
 # 1. READ RASTER & METADATA
-# ==========================================
 tif_path = 'collocate.tif'
 dim_path = 'collocate.dim'
 
@@ -24,18 +23,15 @@ with rasterio.open(tif_path) as src:
     profile = src.profile.copy()
     height, width = src.height, src.width
 
-# ==========================================
 # 2. MATCH BAND NAMES FROM SNAP .DIM
-# ==========================================
 tree = ET.parse(dim_path)
 root = tree.getroot()
 band_names = [elem.text for elem in root.findall('.//BAND_NAME')]
 
 print(f"\nDiscovered {len(band_names)} bands in .dim file.")
 
-# ==========================================
+
 # 3. SELECT REQUIRED BANDS & FLATTEN
-# ==========================================
 target_bands = [
     'B2_M',
     'B3_M',
@@ -59,9 +55,8 @@ X_selected = data[selected_indices, :, :]
 X_matrix = np.transpose(X_selected, (1, 2, 0)).reshape(-1, len(target_bands))
 X_matrix = np.nan_to_num(X_matrix, nan=0.0, posinf=0.0, neginf=0.0)
 
-# ==========================================
+
 # 4. PSEUDO-GROUND TRUTH VIA THRESHOLDS
-# ==========================================
 y_matrix = np.zeros(X_matrix.shape[0], dtype=np.uint8)
 
 mndwi = X_matrix[:, target_bands.index('MNDWI_M')]
@@ -86,9 +81,7 @@ for label_id, name in enumerate(
 ):
     print(f" - {name}: {np.sum(y_matrix == label_id):,}")
 
-# ==========================================
 # 5. PREPARE TRAINING DATA (RAW BANDS ONLY)
-# ==========================================
 raw_train_bands = [
     'B2_M',
     'B3_M',
@@ -124,9 +117,8 @@ print(
     )
 )
 
-# ==========================================
+
 # 6. SPATIAL BLOCK CROSS-VALIDATION
-# ==========================================
 pixel_indices = np.where(valid_mask)[0]
 row_coords, col_coords = np.unravel_index(pixel_indices, (height, width))
 
@@ -171,9 +163,8 @@ print(
     f"Mean Spatial Accuracy: {np.mean(spatial_scores):.4f} (+/- {np.std(spatial_scores):.4f})"
 )
 
-# ==========================================
+
 # 7. BATCHED FULL-SCENE INFERENCE & EXPORT
-# ==========================================
 print("\nPredicting classes across full raster scene (batched)...")
 X_all_raw = X_matrix[:, raw_cols]
 full_prediction = np.zeros(X_all_raw.shape[0], dtype=np.uint8)
@@ -198,9 +189,7 @@ with rasterio.open(out_tif, 'w', **profile) as dst:
 
 print(f"SUCCESS: Saved to {out_tif}")
 
-# ==========================================
 # 8. VISUALIZATION
-# ==========================================
 colors = ['#000000', '#1f77b4', '#2ca02c', '#d62728', '#8c564b']
 cmap = mcolors.ListedColormap(colors)
 bounds = [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5]
