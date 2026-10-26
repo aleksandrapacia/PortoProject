@@ -2,7 +2,7 @@
 
 **Title:** Fusing Sentinel-1 SAR and Sentinel-2 optical data in SNAP for land-cover classification of Porto (Random Forest, spatial-block validation)
 
-Erasmus mini-project for a SNAP / remote-sensing supervisor at Universidade do Porto. Separate from the AGH engineering thesis.
+Mini-project for a SNAP / remote-sensing
 
 ## Idea in one sentence
 
@@ -17,8 +17,7 @@ Collocate radar and optical Sentinel data over Porto–Douro in SNAP, then class
 5. Classified GeoTIFF, feature-importance plot, confidence layer in SNAP
 
 Code: `code_Porto/ml_Porto_analysis.py`  
-Meeting note (2–3 pages): `docs/Porto_S1S2_classification_brief.pdf`  
-What to say on Monday: `docs/meeting_script.md`
+Notes : `docs/Porto_S1S2_classification_brief.pdf`  
 
 ## Honest limit
 
