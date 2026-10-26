@@ -1,0 +1,23 @@
+.venv/
+**/__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/
+code_Porto/.venv/
+
+# SNAP products and rasters (too large for GitHub)
+*.tif
+*.tiff
+
+# Do not commit raw satellite scenes
+data/raw/
+data/processed/
+*.zip
+*.SAFE/
+*.dim
+*.data/
+
+# Keep generated maps out of git unless they are small figures
+outputs/*.tif
+outputs/*.tiff
+outputs/*.nc
