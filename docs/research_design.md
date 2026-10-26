@@ -1,5 +1,7 @@
 # Research design — turbidity as a flood proxy, not chemical pollution
 
+> **Not the Monday meeting topic.** The delivered SNAP+Python work is S1/S2 land-cover classification (`docs/Porto_S1S2_classification_brief.pdf`). This note is an optional later track.
+
 ## What Sentinel can and cannot see
 
 Satellites do **not** measure metals, bacteria, sewage, nitrates or “pollution” as a lab would.

@@ -1,32 +1,42 @@
-# Douro flood-driven turbidity (Porto)
+# Porto land-cover: Sentinel-1 + Sentinel-2 (SNAP + Python)
 
-**Title:** Flood-driven turbidity in the Douro estuary: a Sentinel-2 C2RCC test against Crestuma discharge
+**Title:** Fusing Sentinel-1 SAR and Sentinel-2 optical data in SNAP for land-cover classification of Porto (Random Forest, spatial-block validation)
 
-Erasmus project for a SNAP supervisor. Separate from the AGH engineering thesis.
+Erasmus mini-project for a SNAP / remote-sensing supervisor at Universidade do Porto. Separate from the AGH engineering thesis.
 
-## Thesis
+## Idea in one sentence
 
-Sentinel cannot see metals or sewage. It **can** see **mud in the water** (TSM / turbidity). After high Crestuma discharge the Douro is known to send a turbid plume to the shelf. This project tests whether that pulse is visible, date by date, in **Sentinel-2 processed in SNAP (C2RCC)**.
+Collocate radar and optical Sentinel data over Porto–Douro in SNAP, then classify **water / vegetation / urban / bare soil** in Python — and show that a random 100% accuracy score is **not** a scientific result.
 
-## Hypotheses
+## What is already done
 
-- **H1:** Lower-estuary TSM is higher after high discharge (\(Q > 500\,\mathrm{m^3/s}\)) than on low-\(Q\) days.
-- **H2:** Coastal plume area (km² above a TSM threshold) increases with \(Q\).
+1. SNAP collocation of Sentinel-1 (σ⁰ VV, VH) with Sentinel-2 (including MNDWI, NDVI)
+2. Random Forest on **raw bands** (B2, B3, B8, B11, VV, VH)
+3. Labels first taken from index thresholds (this leaked into the score)
+4. Spatial block cross-validation (`GroupKFold`)
+5. Classified GeoTIFF, feature-importance plot, confidence layer in SNAP
 
-Full design: [`docs/research_design.md`](docs/research_design.md).
+Code: `code_Porto/ml_Porto_analysis.py`  
+Meeting note (2–3 pages): `docs/Porto_S1S2_classification_brief.pdf`  
+What to say on Monday: `docs/meeting_script.md`
 
-## What you process
+## Honest limit
 
-- **Main:** Sentinel-2 L1C optical bands → SNAP **C2RCC/C2X** → TSM
-- **Context:** Crestuma \(Q\), tide
-- **Optional:** Sentinel-1 only to mark the wet week when S2 is cloudy
-- **Not main:** water temperature (no S2 thermal band)
+Scores near 99–100% are still too high: labels come from NDVI/MNDWI/SAR thresholds, not from independent polygons. The scientific point of the meeting is that leak, not the pretty map.
 
+## Next (after the supervisor comments)
 
+- Independent ROIs or CORINE / ESA WorldCover as test labels
+- DEM (slope / aspect) in the feature stack
+- Compare Random Forest with SVM or XGBoost under the same spatial CV
 
-## Status
+## Reproduce
 
-Chosen topic: **Sentinel-2 C2RCC turbidity vs Crestuma Q** (not S1 water-extent, not temperature).
+Raw SNAP products (`.dim` / `.tif`) stay local — they are too large for GitHub. Place `collocate.tif` and `collocate.dim` next to the script, then:
 
-- Preliminary write-up: `docs/Porto_Douro_turbidity_preliminary.docx`
-- First SNAP product: `data/processed/S2C_MSIL2A_20251010T112131_R037_T29TNF_20251010T151313_douro.dim` (BEAM-DIMAP, Porto / Douro, 2025-10-10)
+```bash
+cd code_Porto
+python ml_Porto_analysis.py
+```
+
+Repo: https://github.com/aleksandrapacia/PortoProject
