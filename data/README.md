@@ -1,6 +1,6 @@
 # Data
 
-Do not commit full SAFE archives. The first working SNAP product is local BEAM-DIMAP.
+Didn't commit full SAFE archives. The first working SNAP product is local BEAM-DIMAP.
 
 ## First product (downloaded)
 
