@@ -22,11 +22,7 @@ Full design: [`docs/research_design.md`](docs/research_design.md).
 - **Optional:** Sentinel-1 only to mark the wet week when S2 is cloudy
 - **Not main:** water temperature (no S2 thermal band)
 
-## Deliverables
 
-1. PDF (8–12 pages) organised around H1/H2
-2. Repo: SNAP graph + Python + two example maps + table
-3. Honest language: proxy, not chemistry
 
 ## Status
 
