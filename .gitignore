@@ -4,6 +4,7 @@
 .DS_Store
 .ipynb_checkpoints/
 code_Porto/.venv/
+.mplconfig/
 
 # SNAP products and rasters (too large for GitHub)
 *.tif

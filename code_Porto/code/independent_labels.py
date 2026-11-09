@@ -6,7 +6,7 @@ This script does not retrain. It scores map_python_random_forest.tif against
 an external 10 m product (WorldCover) and, if present, hand ROIs.
 
 CORINE is 100 m — too coarse for this 20 m stack — so WorldCover is the
-reference. DEM is a later step, not here.
+reference. DEM is in ml_Porto_dem.py.
 """
 
 from __future__ import annotations
@@ -226,7 +226,7 @@ def main() -> None:
         print(
             "\nNext: in QGIS, digitize a few polygons per class into "
             f"{ROI_PATH} (property class = 1 water, 2 veg, 3 urban, 4 soil, CRS WGS84) "
-            "and rerun this script. DEM comes after that."
+            "and rerun this script. DEM is in ml_Porto_dem.py."
         )
 
 
