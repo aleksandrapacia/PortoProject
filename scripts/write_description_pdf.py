@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""2–3 page meeting note PDF (English)."""
+"""Short English project description PDF."""
 
 from pathlib import Path
 
@@ -7,9 +7,9 @@ from fpdf import FPDF
 
 ROOT = Path(__file__).resolve().parents[1]
 FONT = "/System/Library/Fonts/Supplemental/Arial Unicode.ttf"
-OUT = ROOT / "docs" / "Porto_S1S2_classification_brief.pdf"
-FIG_MAP = ROOT / "outputs" / "figures" / "fig_classification.png"
-FIG_IMP = ROOT / "outputs" / "figures" / "fig_importance.png"
+OUT = ROOT / "docs" / "Porto_S1S2_classification_description.pdf"
+FIG_MAP = ROOT / "code_Porto" / "results" / "04_python_landcover_map.png"
+FIG_IMP = ROOT / "code_Porto" / "results" / "05_python_feature_importance.png"
 
 
 class Doc(FPDF):
@@ -57,7 +57,7 @@ def main() -> None:
     pdf.set_x(pdf.l_margin)
     pdf.set_font("Doc", size=11)
     pdf.set_text_color(80, 80, 80)
-    pdf.multi_cell(w, 6, "Supervisor meeting note  |  26 October 2026", align="C")
+    pdf.multi_cell(w, 6, "Project description", align="C")
     pdf.ln(1)
     pdf.set_x(pdf.l_margin)
     pdf.set_font("Doc", size=16)
@@ -89,16 +89,17 @@ def main() -> None:
     )
     pdf.ln(3)
 
-    h(pdf, "1. Aim")
+    h(pdf, "1. What this project is")
     p(
         pdf,
-        "Test whether collocated Sentinel-1 SAR and Sentinel-2 optical data, processed in SNAP "
-        "and classified in Python, can separate four land-cover classes over Porto and the Douro "
-        "valley — water, vegetation, urban, bare soil — and treat accuracy numbers as something "
-        "to audit, not to advertise.",
+        "A SNAP + Python workflow over Porto and the Douro valley. Sentinel-1 radar and "
+        "Sentinel-2 optical images are collocated in SNAP, then a Random Forest in Python "
+        "assigns each pixel to water, vegetation, urban, or bare soil. The point is not only "
+        "the map. It is to fuse two sensors and to check whether a high accuracy score is "
+        "actually meaningful.",
     )
 
-    h(pdf, "2. Method (what was actually run)")
+    h(pdf, "2. Method")
     bullet(
         pdf,
         "SNAP: collocation of Sentinel-1 GRD (sigma0 VV, VH) with Sentinel-2; MNDWI and NDVI as auxiliary layers.",
@@ -113,7 +114,7 @@ def main() -> None:
     )
     bullet(
         pdf,
-        "Validation: stratified random split and spatial block cross-validation (GroupKFold on a 10×10 grid).",
+        "Validation: stratified random split and spatial block cross-validation (GroupKFold on a 10x10 grid).",
     )
 
     h(pdf, "3. Results")
@@ -127,7 +128,7 @@ def main() -> None:
         pdf,
         "What is usable: the classified map is spatially coherent (ocean and Douro as water; "
         "built-up as fragmented red; vegetation dominant inland). Feature importance shows optical "
-        "structure as the main driver, with VH backscatter contributing to the urban class — radar "
+        "structure as the main driver, with VH backscatter contributing to the urban class. Radar "
         "is not redundant.",
     )
 
@@ -135,6 +136,7 @@ def main() -> None:
         pdf.ln(1)
         pdf.set_x(pdf.l_margin)
         pdf.image(str(FIG_MAP), w=170)
+        pdf.set_x(pdf.l_margin)
         pdf.set_font("Doc", size=9)
         pdf.set_text_color(70, 70, 70)
         pdf.multi_cell(
@@ -147,6 +149,7 @@ def main() -> None:
     if FIG_IMP.exists():
         pdf.set_x(pdf.l_margin)
         pdf.image(str(FIG_IMP), w=155)
+        pdf.set_x(pdf.l_margin)
         pdf.set_font("Doc", size=9)
         pdf.set_text_color(70, 70, 70)
         pdf.multi_cell(
@@ -156,7 +159,7 @@ def main() -> None:
         )
         pdf.ln(2)
 
-    h(pdf, "4. Limitation (the point of this meeting)")
+    h(pdf, "4. Limitation")
     p(
         pdf,
         "The 100 percent figure was a data leak: labels derived from NDVI/MNDWI, then a tree model "
@@ -166,24 +169,12 @@ def main() -> None:
         "before any accuracy is reported as a scientific result.",
     )
 
-    h(pdf, "5. Proposed next steps")
+    h(pdf, "5. Possible next steps")
     bullet(pdf, "Independent test labels: SNAP/QGIS ROIs versus CORINE or ESA WorldCover.")
-    bullet(pdf, "Add DEM derivatives (slope, aspect) — Douro valley relief.")
+    bullet(pdf, "Add DEM derivatives (slope, aspect) for Douro valley relief.")
     bullet(
         pdf,
-        "Same spatial CV, second classifier (SVM or XGBoost) for a method comparison, not a leaderboard.",
-    )
-    p(
-        pdf,
-        "Question for the supervisor: which of these is the right next increment at Erasmus scale?",
-    )
-    pdf.ln(2)
-    p(
-        pdf,
-        "I would be grateful for comments on this SNAP–Python workflow, and — if you are willing "
-        "to guide the next step — for a short recommendation letter in due course. I can provide "
-        "a one-paragraph description of the method and of my own contribution.",
-        size=10,
+        "Same spatial CV, second classifier (SVM or XGBoost) for a method comparison.",
     )
 
     OUT.parent.mkdir(parents=True, exist_ok=True)

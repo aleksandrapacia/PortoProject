@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import xml.etree.ElementTree as ET
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
@@ -7,10 +9,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GroupKFold, train_test_split
 
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+RESULTS = ROOT / "results"
 
 # 1. READ RASTER & METADATA
-tif_path = 'collocate.tif'
-dim_path = 'collocate.dim'
+tif_path = DATA / "collocate.tif"
+dim_path = DATA / "collocate.dim"
 
 with rasterio.open(tif_path) as src:
     print("- - - RASTER METADATA - - -")
@@ -183,8 +188,9 @@ profile.update(
     count=1, dtype=rasterio.uint8, nodata=0, compress='lzw'  # saves disk space
 )
 
-out_tif = 'classified_porto_python.tif'
-with rasterio.open(out_tif, 'w', **profile) as dst:
+RESULTS.mkdir(parents=True, exist_ok=True)
+out_tif = RESULTS / "map_python_random_forest.tif"
+with rasterio.open(out_tif, "w", **profile) as dst:
     dst.write(classified_map, 1)
 
 print(f"SUCCESS: Saved to {out_tif}")
@@ -207,4 +213,7 @@ plt.title(
 )
 plt.axis('off')
 plt.tight_layout()
+out_png = RESULTS / "04_python_landcover_map.png"
+plt.savefig(out_png, dpi=140, bbox_inches="tight")
+print(f"SUCCESS: Saved to {out_png}")
 plt.show()

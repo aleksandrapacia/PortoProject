@@ -17,7 +17,7 @@ data/processed/
 *.dim
 *.data/
 
-# Keep generated maps out of git unless they are small figures
-outputs/*.tif
-outputs/*.tiff
-outputs/*.nc
+# SNAP / raster products (too large for GitHub)
+code_Porto/data/
+code_Porto/results/*.tif
+code_Porto/results/*.tiff

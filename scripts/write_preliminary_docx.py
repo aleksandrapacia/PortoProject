@@ -211,7 +211,7 @@ def main() -> None:
     add_p(
         doc,
         "First data product in this repository: a BEAM-DIMAP subset over the Douro / Porto area "
-        "(see data/README.md and data/processed/). Full L1C SAFE scenes for the C2RCC series will be "
+        "(see README.md and data/processed/). Full L1C SAFE scenes for the C2RCC series will be "
         "added date by date; the DIMAP is the SNAP-native working format."
     )
 

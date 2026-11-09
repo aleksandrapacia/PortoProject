@@ -1,0 +1,7 @@
+numpy
+matplotlib
+scipy
+rasterio
+scikit-learn
+planetary-computer
+pystac-client
